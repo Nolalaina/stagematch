@@ -1,5 +1,22 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api.js';
+import { 
+  BarChart3, 
+  Building2, 
+  Users, 
+  Sliders, 
+  Target, 
+  FileText, 
+  Sparkles, 
+  GraduationCap, 
+  Mail, 
+  CheckCircle2, 
+  XCircle, 
+  Plus, 
+  Trash2, 
+  Ban,
+  ShieldCheck
+} from 'lucide-react';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('stats'); // 'stats' | 'companies' | 'users' | 'referentiel'
@@ -118,8 +135,11 @@ export default function AdminDashboard() {
       {/* Header Admin */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28, flexWrap: 'wrap', gap: 16 }}>
         <div>
-          <h1 style={{ fontSize: 32, marginBottom: 4 }}>Espace <span className="grad-text">Administration</span></h1>
-          <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Supervision globale de la plateforme StageMatch</div>
+          <h1 style={{ fontSize: 32, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <ShieldCheck size={28} style={{ color: 'var(--accent)' }} />
+            <span>Console <span className="grad-text">d'Administration</span></span>
+          </h1>
+          <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Supervision globale et gestion des accès StageMatch</div>
         </div>
 
         {/* Tab Navigation */}
@@ -127,26 +147,34 @@ export default function AdminDashboard() {
           <button
             className={`tab-btn ${activeTab === 'stats' ? 'active' : ''}`}
             onClick={() => setActiveTab('stats')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            📊 Statistiques
+            <BarChart3 size={15} />
+            <span>Statistiques</span>
           </button>
           <button
             className={`tab-btn ${activeTab === 'companies' ? 'active' : ''}`}
             onClick={() => setActiveTab('companies')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            🏢 Entreprises ({pending.length})
+            <Building2 size={15} />
+            <span>Entreprises ({pending.length})</span>
           </button>
           <button
             className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
             onClick={() => setActiveTab('users')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            👥 Utilisateurs ({users.length})
+            <Users size={15} />
+            <span>Utilisateurs ({users.length})</span>
           </button>
           <button
             className={`tab-btn ${activeTab === 'referentiel' ? 'active' : ''}`}
             onClick={() => setActiveTab('referentiel')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            ⚙️ Référentiel
+            <Sliders size={15} />
+            <span>Référentiel</span>
           </button>
         </div>
       </div>
@@ -162,14 +190,16 @@ export default function AdminDashboard() {
               {/* Stat Cards Grid */}
               <div className="stats-grid">
                 {[
-                  ['Stages publiés', stats.nb_stages_publies || 0, '🎯'],
-                  ['Candidatures', stats.nb_candidatures || 0, '📑'],
-                  ['Score moyen', stats.score_matching_moyen != null ? `${Number(stats.score_matching_moyen).toFixed(0)}%` : '—', '⚡'],
-                  ['Entreprises validées', stats.nb_entreprises_validees || 0, '🏢'],
-                  ['Étudiants inscrits', stats.nb_etudiants || 0, '🎓'],
-                ].map(([label, value, icon]) => (
+                  ['Stages publiés', stats.nb_stages_publies || 0, Target, 'var(--accent)'],
+                  ['Candidatures', stats.nb_candidatures || 0, FileText, '#d946ef'],
+                  ['Score moyen', stats.score_matching_moyen != null ? `${Number(stats.score_matching_moyen).toFixed(0)}%` : '—', Sparkles, '#f43f5e'],
+                  ['Entreprises validées', stats.nb_entreprises_validees || 0, Building2, '#06b6d4'],
+                  ['Étudiants inscrits', stats.nb_etudiants || 0, GraduationCap, '#10b981'],
+                ].map(([label, value, Icon, color]) => (
                   <div key={label} className="stat-card">
-                    <div className="stat-card__icon">{icon}</div>
+                    <div className="stat-card__icon" style={{ color }}>
+                      <Icon size={24} />
+                    </div>
                     <div className="stat-card__value">{value}</div>
                     <div className="stat-card__label">{label}</div>
                   </div>
@@ -189,10 +219,10 @@ export default function AdminDashboard() {
                         const pct = Math.round((item.count / total) * 100);
                         const statusLabels = {
                           submitted: 'Soumises',
-                          viewed: 'Vues',
-                          interview: 'Entretiens',
-                          result_positive: 'Acceptées',
-                          result_negative: 'Refusées'
+                          viewed: 'Examinées',
+                          interview: 'Entretiens Planifiés',
+                          result_positive: 'Candidatures Retenues',
+                          result_negative: 'Candidatures Refusées'
                         };
                         return (
                           <div key={item.status}>
@@ -214,13 +244,13 @@ export default function AdminDashboard() {
                       })}
                     </div>
                   ) : (
-                    <div className="empty-state">Aucune candidature pour le moment.</div>
+                    <div className="empty-state">Aucune candidature enregistrée.</div>
                   )}
                 </div>
 
                 {/* Graphique 2: Performance Moteur Matching */}
                 <div className="card">
-                  <h3 style={{ fontSize: 18, marginBottom: 20 }}>Performance Algorithmique</h3>
+                  <h3 style={{ fontSize: 18, marginBottom: 20 }}>Adéquation Moteur Matching</h3>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '10px 0' }}>
                     <div style={{ textAlign: 'center' }}>
                       <svg width="130" height="130" viewBox="0 0 36 36">
@@ -240,8 +270,8 @@ export default function AdminDashboard() {
                         />
                         <defs>
                           <linearGradient id="grad-svg" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#6366f1" />
-                            <stop offset="100%" stopColor="#ec4899" />
+                            <stop offset="0%" stopColor="#8b5cf6" />
+                            <stop offset="100%" stopColor="#f43f5e" />
                           </linearGradient>
                         </defs>
                         <text x="18" y="20.5" fill="var(--text-primary)" fontSize="7.5" textAnchor="middle" fontWeight="bold" fontFamily="Outfit, sans-serif">
@@ -253,11 +283,11 @@ export default function AdminDashboard() {
 
                     <div style={{ borderLeft: '1px solid var(--border)', paddingLeft: 24 }}>
                       <div style={{ marginBottom: 16 }}>
-                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Validées</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Comptes Validés</div>
                         <div style={{ fontSize: 22, fontWeight: 'bold', color: 'var(--success)' }}>{stats.nb_entreprises_validees || 0}</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>En Attente</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Demandes en Attente</div>
                         <div style={{ fontSize: 22, fontWeight: 'bold', color: 'var(--warning)' }}>{pending.length}</div>
                       </div>
                     </div>
@@ -281,16 +311,19 @@ export default function AdminDashboard() {
             <div key={c.id} className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <div>
                 <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 4 }}>{c.name}</div>
-                <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-                  ✉ Contact : {c.contact_email || 'Non renseigné'} · Secteur : {c.sector || 'Non renseigné'}
+                <div style={{ fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Mail size={13} /> {c.contact_email || 'Non renseigné'}
+                  </span>
+                  <span>· Secteur : {c.sector || 'Non renseigné'}</span>
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 10 }}>
-                <button className="btn btn--danger btn--sm" onClick={() => decideCompany(c.id, 'rejected')}>
-                  Refuser
+                <button className="btn btn--danger btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }} onClick={() => decideCompany(c.id, 'rejected')}>
+                  <XCircle size={14} /> Refuser
                 </button>
-                <button className="btn btn--success btn--sm" onClick={() => decideCompany(c.id, 'approved')}>
-                  ✓ Valider l'entreprise
+                <button className="btn btn--success btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }} onClick={() => decideCompany(c.id, 'approved')}>
+                  <CheckCircle2 size={14} /> Valider l'entreprise
                 </button>
               </div>
             </div>
@@ -301,7 +334,7 @@ export default function AdminDashboard() {
       {/* TAB 3: GESTION UTILISATEURS */}
       {activeTab === 'users' && (
         <div className="animate-in">
-          <h2 style={{ fontSize: 20, marginBottom: 18 }}>Liste des utilisateurs ({users.length})</h2>
+          <h2 style={{ fontSize: 20, marginBottom: 18 }}>Répertoire des comptes utilisateurs ({users.length})</h2>
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
             <table>
               <thead>
@@ -332,8 +365,8 @@ export default function AdminDashboard() {
                     </td>
                     <td style={{ padding: '16px 20px' }}>
                       {u.is_active && u.role !== 'admin' ? (
-                        <button className="btn btn--danger btn--xs" onClick={() => handleDeactivateUser(u.id)}>
-                          Désactiver
+                        <button className="btn btn--danger btn--xs" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} onClick={() => handleDeactivateUser(u.id)}>
+                          <Ban size={12} /> Désactiver
                         </button>
                       ) : (
                         <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>—</span>
@@ -375,12 +408,12 @@ export default function AdminDashboard() {
                   onChange={(e) => setNewSkillCategory(e.target.value)}
                 />
               </div>
-              <button type="submit" className="btn btn--primary btn--sm" style={{ alignSelf: 'flex-start' }}>
-                + Ajouter la compétence
+              <button type="submit" className="btn btn--primary btn--sm" style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Plus size={14} /> Ajouter la compétence
               </button>
             </form>
 
-            <div className="section-title">Compétences existantes ({skills.length})</div>
+            <div className="section-title">Compétences enregistrées ({skills.length})</div>
             <div style={{ maxHeight: 320, overflowY: 'auto' }}>
               {skills.map((s) => (
                 <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
@@ -391,9 +424,9 @@ export default function AdminDashboard() {
                   <button
                     onClick={() => handleDeleteSkill(s.id)}
                     className="btn btn--ghost btn--xs"
-                    style={{ color: 'var(--danger)' }}
+                    style={{ color: 'var(--danger)', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                   >
-                    Supprimer
+                    <Trash2 size={12} /> Supprimer
                   </button>
                 </div>
               ))}
@@ -415,12 +448,12 @@ export default function AdminDashboard() {
                   required
                 />
               </div>
-              <button type="submit" className="btn btn--primary btn--sm" style={{ alignSelf: 'flex-start' }}>
-                + Ajouter la filière
+              <button type="submit" className="btn btn--primary btn--sm" style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Plus size={14} /> Ajouter la filière
               </button>
             </form>
 
-            <div className="section-title">Filières existantes ({fields.length})</div>
+            <div className="section-title">Filières enregistrées ({fields.length})</div>
             <div style={{ maxHeight: 320, overflowY: 'auto' }}>
               {!fields.length && <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>Aucune filière configurée.</div>}
               {fields.map((f) => (
@@ -429,9 +462,9 @@ export default function AdminDashboard() {
                   <button
                     onClick={() => handleDeleteField(f.id)}
                     className="btn btn--ghost btn--xs"
-                    style={{ color: 'var(--danger)' }}
+                    style={{ color: 'var(--danger)', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                   >
-                    Supprimer
+                    <Trash2 size={12} /> Supprimer
                   </button>
                 </div>
               ))}

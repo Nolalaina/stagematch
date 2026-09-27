@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { GraduationCap, Building2, Mail, Lock, Building, ArrowRight, ShieldAlert } from 'lucide-react';
 
 export default function Register() {
   const [role, setRole] = useState('student');
@@ -30,58 +31,88 @@ export default function Register() {
 
   return (
     <div style={{ minHeight: 'calc(100vh - 68px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 16px' }}>
-      <div style={{ width: '100%', maxWidth: 460, animation: 'fadeInUp 0.4s ease forwards' }}>
+      <div style={{ width: '100%', maxWidth: 460 }} className="animate-in">
 
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 36 }}>
-          <h1 style={{ fontSize: 32, marginBottom: 10 }}>
-            Créer un compte <span className="grad-text">✦</span>
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <h1 style={{ fontSize: 32, marginBottom: 8 }}>
+            Créer un compte <span className="grad-text">StageMatch</span>
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>
-            Rejoignez la communauté StageMatch
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>
+            Rejoignez le réseau de recrutement de référence
           </p>
         </div>
 
         {/* Role Switch */}
         <div style={{ display: 'flex', gap: 0, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: 4, marginBottom: 24 }}>
-          {[['student', '🎓 Étudiant'], ['company', '🏢 Entreprise']].map(([val, label]) => (
-            <button
-              key={val}
-              type="button"
-              onClick={() => setRole(val)}
-              style={{
-                flex: 1,
-                background: role === val ? 'var(--grad-primary)' : 'transparent',
-                border: 'none',
-                borderRadius: 10,
-                color: role === val ? '#fff' : 'var(--text-secondary)',
-                fontFamily: 'Outfit, sans-serif',
-                fontSize: 14,
-                fontWeight: 600,
-                padding: '10px 16px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: role === val ? '0 2px 12px rgba(99,102,241,0.3)' : 'none',
-              }}
-            >
-              {label}
-            </button>
-          ))}
+          <button
+            type="button"
+            onClick={() => setRole('student')}
+            style={{
+              flex: 1,
+              background: role === 'student' ? 'var(--grad-primary)' : 'transparent',
+              border: 'none',
+              borderRadius: 10,
+              color: role === 'student' ? '#fff' : 'var(--text-secondary)',
+              fontFamily: 'Outfit, sans-serif',
+              fontSize: 14,
+              fontWeight: 600,
+              padding: '10px 16px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+              boxShadow: role === 'student' ? '0 4px 15px rgba(139, 92, 246, 0.35)' : 'none',
+            }}
+          >
+            <GraduationCap size={16} />
+            <span>Candidat Étudiant</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setRole('company')}
+            style={{
+              flex: 1,
+              background: role === 'company' ? 'var(--grad-primary)' : 'transparent',
+              border: 'none',
+              borderRadius: 10,
+              color: role === 'company' ? '#fff' : 'var(--text-secondary)',
+              fontFamily: 'Outfit, sans-serif',
+              fontSize: 14,
+              fontWeight: 600,
+              padding: '10px 16px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+              boxShadow: role === 'company' ? '0 4px 15px rgba(139, 92, 246, 0.35)' : 'none',
+            }}
+          >
+            <Building2 size={16} />
+            <span>Entreprise / RH</span>
+          </button>
         </div>
 
         <div className="card" style={{ padding: 32 }}>
           {error && <div className="error-banner">{error}</div>}
 
           {role === 'company' && (
-            <div className="info-banner" style={{ marginBottom: 20 }}>
-              Votre compte devra être validé par un administrateur avant de publier des offres.
+            <div className="info-banner" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <ShieldAlert size={18} />
+              <span>Votre compte entreprise sera soumis à une vérification administrative avant publication.</span>
             </div>
           )}
 
           <form onSubmit={onSubmit}>
             {role === 'company' && (
               <div className="field">
-                <label htmlFor="companyName">Nom de l'entreprise</label>
+                <label htmlFor="companyName" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Building size={13} /> Nom de l'organisation
+                </label>
                 <input
                   id="companyName"
                   value={companyName}
@@ -93,21 +124,23 @@ export default function Register() {
             )}
 
             <div className="field">
-              <label htmlFor="email">
-                Email {role === 'student' ? '(universitaire de préférence)' : 'professionnel'}
+              <label htmlFor="email" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Mail size={13} /> Email {role === 'student' ? 'professionnel / universitaire' : 'professionnel RH'}
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="vous@exemple.com"
+                placeholder="vous@domaine.com"
                 required
               />
             </div>
 
             <div className="field">
-              <label htmlFor="password">Mot de passe (8 caractères min.)</label>
+              <label htmlFor="password" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Lock size={13} /> Mot de passe (8 caractères min.)
+              </label>
               <input
                 id="password"
                 type="password"
@@ -122,10 +155,11 @@ export default function Register() {
             <button
               type="submit"
               className="btn btn--primary"
-              style={{ width: '100%', marginTop: 8, padding: '13px' }}
+              style={{ width: '100%', marginTop: 8, padding: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
               disabled={loading}
             >
-              {loading ? 'Création du compte...' : 'Créer mon compte →'}
+              <span>{loading ? 'Création en cours...' : 'Créer mon compte'}</span>
+              <ArrowRight size={16} />
             </button>
           </form>
         </div>

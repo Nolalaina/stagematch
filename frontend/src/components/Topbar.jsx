@@ -2,6 +2,19 @@ import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../api.js';
+import { 
+  Bell, 
+  LayoutDashboard, 
+  Search, 
+  FileText, 
+  User, 
+  Building2, 
+  ShieldCheck, 
+  LogOut, 
+  LogIn, 
+  CheckCheck,
+  Sparkles
+} from 'lucide-react';
 
 export default function Topbar() {
   const { user, logout } = useAuth();
@@ -14,16 +27,16 @@ export default function Topbar() {
 
   const linksByRole = {
     student: [
-      { to: '/student', label: 'Tableau de bord' },
-      { to: '/internships', label: 'Explorer' },
-      { to: '/student/applications', label: 'Candidatures' },
-      { to: '/student/profile', label: 'Mon Profil' },
+      { to: '/student', label: 'Tableau de bord', icon: LayoutDashboard },
+      { to: '/internships', label: 'Explorer les stages', icon: Search },
+      { to: '/student/applications', label: 'Candidatures', icon: FileText },
+      { to: '/student/profile', label: 'Mon Profil & CV', icon: User },
     ],
     company: [
-      { to: '/company', label: 'Espace Entreprise' },
+      { to: '/company', label: 'Espace Entreprise', icon: Building2 },
     ],
     admin: [
-      { to: '/admin', label: 'Administration' },
+      { to: '/admin', label: 'Console d\'Administration', icon: ShieldCheck },
     ],
   };
 
@@ -65,18 +78,39 @@ export default function Topbar() {
 
   return (
     <nav className="topbar">
-      <Link to="/" className="wordmark">StageMatch</Link>
+      <Link to="/" className="wordmark">
+        <div style={{
+          width: 32,
+          height: 32,
+          borderRadius: 10,
+          background: 'var(--grad-primary)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+          boxShadow: '0 0 16px rgba(139, 92, 246, 0.4)'
+        }}>
+          <Sparkles size={18} />
+        </div>
+        StageMatch
+      </Link>
 
       <div className="nav-links">
-        {user && (linksByRole[user.role] || []).map((l) => (
-          <Link
-            key={l.to}
-            to={l.to}
-            className={location.pathname === l.to || location.pathname.startsWith(l.to + '/') ? 'active' : ''}
-          >
-            {l.label}
-          </Link>
-        ))}
+        {user && (linksByRole[user.role] || []).map((l) => {
+          const Icon = l.icon;
+          const isActive = location.pathname === l.to || (l.to !== '/' && location.pathname.startsWith(l.to + '/'));
+          return (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={isActive ? 'active' : ''}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+            >
+              <Icon size={16} />
+              <span>{l.label}</span>
+            </Link>
+          );
+        })}
 
         {/* Notification Bell */}
         {user && (
@@ -86,7 +120,7 @@ export default function Topbar() {
               className="notif-btn"
               title="Notifications"
             >
-              🔔
+              <Bell size={18} style={{ color: 'var(--text-secondary)' }} />
               {unreadCount > 0 && (
                 <span className="notif-badge">{unreadCount}</span>
               )}
@@ -95,8 +129,8 @@ export default function Topbar() {
             {showNotifs && (
               <div className="notif-dropdown">
                 <div className="notif-dropdown__header">
-                  <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>
-                    Notifications {unreadCount > 0 && (
+                  <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Bell size={16} /> Notifications {unreadCount > 0 && (
                       <span className="tag tag--active" style={{ marginLeft: 6, padding: '2px 8px', fontSize: 11 }}>
                         {unreadCount}
                       </span>
@@ -106,16 +140,16 @@ export default function Topbar() {
                     <button
                       onClick={handleMarkAllRead}
                       className="btn btn--ghost"
-                      style={{ fontSize: 12, padding: '4px 8px' }}
+                      style={{ fontSize: 12, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 4 }}
                     >
-                      Tout lire
+                      <CheckCheck size={14} /> Tout lire
                     </button>
                   )}
                 </div>
 
                 {!notifications.length ? (
                   <div style={{ fontSize: 13, color: 'var(--text-muted)', textAlign: 'center', padding: '24px 16px' }}>
-                    Aucune notification
+                    Aucune notification pour le moment
                   </div>
                 ) : (
                   notifications.map((n) => (
@@ -148,12 +182,17 @@ export default function Topbar() {
         {user ? (
           <button
             className="btn btn--outline btn--sm"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
             onClick={() => { logout(); navigate('/login'); }}
           >
-            Déconnexion
+            <LogOut size={15} />
+            <span>Déconnexion</span>
           </button>
         ) : (
-          <Link to="/login" className="btn btn--primary btn--sm">Se connecter</Link>
+          <Link to="/login" className="btn btn--primary btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <LogIn size={15} />
+            <span>Se connecter</span>
+          </Link>
         )}
       </div>
     </nav>

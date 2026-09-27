@@ -2,6 +2,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import MatchRing from '../components/MatchRing.jsx';
+import { 
+  MapPin, 
+  Target, 
+  Building2, 
+  User, 
+  BookOpen, 
+  ArrowRight, 
+  Sparkles, 
+  Globe, 
+  CheckCircle2,
+  FileText
+} from 'lucide-react';
 
 export default function StudentDashboard() {
   const [profile, setProfile] = useState(null);
@@ -38,14 +50,15 @@ export default function StudentDashboard() {
               {initials}
             </div>
             <h2 style={{ fontSize: 18, marginBottom: 4 }}>{profile?.full_name}</h2>
-            <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-              {profile?.field_of_study || 'Filière non renseignée'}
+            <div style={{ fontSize: 13, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <BookOpen size={14} />
+              <span>{profile?.field_of_study || 'Filière non renseignée'}</span>
             </div>
           </div>
 
           <hr className="divider" />
 
-          <div className="section-title">Compétences</div>
+          <div className="section-title">Compétences clés</div>
           <div style={{ marginBottom: 20 }}>
             {profile?.skills?.length
               ? profile.skills.map((s) => <span key={s.id} className="tag">{s.name}</span>)
@@ -54,16 +67,19 @@ export default function StudentDashboard() {
           </div>
 
           {profile?.location && (
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>
-              📍 {profile.location} {profile.accepts_remote ? '· Télétravail OK' : ''}
+            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <MapPin size={14} style={{ color: 'var(--accent)' }} />
+              <span>{profile.location} {profile.accepts_remote ? '· Télétravail OK' : ''}</span>
             </div>
           )}
 
-          <Link to="/student/profile" className="btn btn--outline" style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>
-            Modifier le profil
+          <Link to="/student/profile" className="btn btn--outline" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', marginTop: 16 }}>
+            <User size={15} />
+            <span>Modifier le profil</span>
           </Link>
-          <Link to="/student/applications" className="btn btn--ghost" style={{ display: 'block', textAlign: 'center', marginTop: 8, fontSize: 13 }}>
-            Mes candidatures →
+          <Link to="/student/applications" className="btn btn--ghost" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', marginTop: 8, fontSize: 13 }}>
+            <FileText size={14} />
+            <span>Mes candidatures</span>
           </Link>
         </div>
       </aside>
@@ -71,21 +87,22 @@ export default function StudentDashboard() {
       {/* Main content */}
       <main>
         <div style={{ marginBottom: 32 }}>
-          <h1 style={{ fontSize: 34, marginBottom: 8 }}>
-            Recommandé <span className="grad-text">pour vous</span>
+          <h1 style={{ fontSize: 34, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+            Recommandations <span className="grad-text">Sur-Mesure</span>
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>
-            {recommendations.length} offre{recommendations.length !== 1 ? 's' : ''} triée{recommendations.length !== 1 ? 's' : ''} par compatibilité avec votre profil
+            {recommendations.length} offre{recommendations.length !== 1 ? 's' : ''} analysée{recommendations.length !== 1 ? 's' : ''} et classée{recommendations.length !== 1 ? 's' : ''} par score d'adéquation sémantique
           </p>
         </div>
 
         {error && <div className="error-banner">{error}</div>}
 
         {!recommendations.length && (
-          <div className="empty-state">
-            <p>Complétez votre profil et ajoutez des compétences pour recevoir des recommandations personnalisées.</p>
-            <Link to="/student/profile" className="btn btn--primary" style={{ marginTop: 16 }}>
-              Compléter mon profil →
+          <div className="empty-state card">
+            <p>Complétez votre profil et ajoutez des compétences pour débloquer l'analyse prédictive de matching.</p>
+            <Link to="/student/profile" className="btn btn--primary" style={{ marginTop: 16, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <span>Compléter mon profil</span>
+              <ArrowRight size={16} />
             </Link>
           </div>
         )}
@@ -100,18 +117,32 @@ export default function StudentDashboard() {
             <MatchRing score={o.score} />
             <div style={{ flex: 1 }}>
               <h3 style={{ fontSize: 18, marginBottom: 6 }}>{o.title}</h3>
-              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 10 }}>
-                🏢 {o.company}
-                {o.location && ` · 📍 ${o.location}`}
-                {o.isRemote && <span className="tag tag--success" style={{ marginLeft: 8 }}>Télétravail</span>}
+              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <Building2 size={14} /> {o.company}
+                </span>
+                {o.location && (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <MapPin size={14} /> {o.location}
+                  </span>
+                )}
+                {o.isRemote && (
+                  <span className="tag tag--success" style={{ margin: 0, padding: '2px 8px', fontSize: 11 }}>
+                    <Globe size={12} style={{ marginRight: 4 }} /> Télétravail
+                  </span>
+                )}
               </div>
               {o.missingSkills?.length > 0 && (
-                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                  🎯 À acquérir : {o.missingSkills.join(', ')}
+                <div style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Target size={13} style={{ color: 'var(--warning)' }} />
+                  <span>À développer : {o.missingSkills.join(', ')}</span>
                 </div>
               )}
             </div>
-            <span className="btn btn--primary btn--sm">Voir l'offre</span>
+            <span className="btn btn--primary btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <span>Voir l'offre</span>
+              <ArrowRight size={14} />
+            </span>
           </Link>
         ))}
       </main>
