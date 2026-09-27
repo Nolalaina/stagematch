@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/health', (req, res) => res.json({ ok: true, service: 'stagematch-api' }));
+app.get('/api/health', (req, res) => res.json({ ok: true, service: 'stagematch-api', status: 'online' }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentsRoutes);
@@ -25,11 +25,13 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/skills', skillsRoutes);
 app.use('/api/notifications', notificationsRoutes);
 
-// Gestion d'erreur générique (NFR-01 : réponses rapides et propres)
+// Gestion d'erreur centralisée avec messages explicites
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: 'Erreur interne du serveur.' });
+  console.error('[API ERROR]', err);
+  const message = err.message || 'Erreur interne du serveur.';
+  const code = err.code || 'SERVER_ERROR';
+  res.status(err.status || 500).json({ error: message, code });
 });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log(`StageMatch API démarrée sur http://localhost:${port}`));
+app.listen(port, '0.0.0.0', () => console.log(`StageMatch API démarrée sur http://localhost:${port}`));
