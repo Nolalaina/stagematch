@@ -1,0 +1,20 @@
+[
+ {
+  "shape": "Stage",
+  "theme": "Dusk",
+  "axes": "dark/grotesk-sans/cool",
+  "hero": "Stage",
+  "nav": "edge-aligned wordmark + one action",
+  "footer": "mast + wordmark over links",
+  "imagery": "product slot + library stand-ins",
+  "photos": [],
+  "entry": "homepage sign up",
+  "fingerprint": "dusk-deal-1of3",
+  "sections": "Hero · Comment ça marche · Offres en ligne",
+  "signature": "matching interface in hero slot",
+  "waived": "none",
+  "prompt": "Stagematch plateforme matching stage ton utilitaire action inscription",
+  "date": "2026-11-09",
+  "mode": "build"
+ }
+]

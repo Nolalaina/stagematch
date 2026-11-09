@@ -2,18 +2,17 @@ import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../api.js';
-import { 
-  Bell, 
-  LayoutDashboard, 
-  Search, 
-  FileText, 
-  User, 
-  Building2, 
-  ShieldCheck, 
-  LogOut, 
-  LogIn, 
+import {
+  Bell,
+  LayoutDashboard,
+  Search,
+  FileText,
+  User,
+  Building2,
+  ShieldCheck,
+  LogOut,
+  LogIn,
   CheckCheck,
-  Sparkles
 } from 'lucide-react';
 
 export default function Topbar() {
@@ -42,9 +41,7 @@ export default function Topbar() {
 
   const fetchNotifs = () => {
     if (user) {
-      api.getNotifications()
-        .then(setNotifications)
-        .catch(() => {});
+      api.getNotifications().then(setNotifications).catch(() => {});
     }
   };
 
@@ -56,9 +53,7 @@ export default function Topbar() {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setShowNotifs(false);
-      }
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setShowNotifs(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -78,20 +73,8 @@ export default function Topbar() {
 
   return (
     <nav className="topbar">
-      <Link to="/" className="wordmark">
-        <div style={{
-          width: 32,
-          height: 32,
-          borderRadius: 10,
-          background: 'var(--grad-primary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          boxShadow: '0 0 16px rgba(139, 92, 246, 0.4)'
-        }}>
-          <Sparkles size={18} />
-        </div>
+      <Link to="/" className="wordmark" aria-label="StageMatch">
+        <div className="wordmark-mark"><Bell size={16} /></div>
         StageMatch
       </Link>
 
@@ -100,76 +83,39 @@ export default function Topbar() {
           const Icon = l.icon;
           const isActive = location.pathname === l.to || (l.to !== '/' && location.pathname.startsWith(l.to + '/'));
           return (
-            <Link
-              key={l.to}
-              to={l.to}
-              className={isActive ? 'active' : ''}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
-            >
+            <Link key={l.to} to={l.to} className={`nav-link ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
               <Icon size={16} />
               <span>{l.label}</span>
             </Link>
           );
         })}
 
-        {/* Notification Bell */}
         {user && (
-          <div style={{ position: 'relative' }} ref={dropdownRef}>
-            <button
-              onClick={() => setShowNotifs(!showNotifs)}
-              className="notif-btn"
-              title="Notifications"
-            >
-              <Bell size={18} style={{ color: 'var(--text-secondary)' }} />
-              {unreadCount > 0 && (
-                <span className="notif-badge">{unreadCount}</span>
-              )}
+          <div ref={dropdownRef}>
+            <button onClick={() => setShowNotifs(!showNotifs)} className="btn btn--ghost" title="Notifications">
+              <Bell size={18} />
+              {unreadCount > 0 && <span className="tag">{unreadCount}</span>}
             </button>
-
             {showNotifs && (
               <div className="notif-dropdown">
                 <div className="notif-dropdown__header">
-                  <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <Bell size={16} /> Notifications {unreadCount > 0 && (
-                      <span className="tag tag--active" style={{ marginLeft: 6, padding: '2px 8px', fontSize: 11 }}>
-                        {unreadCount}
-                      </span>
-                    )}
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-ink)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                    <Bell size={16} /> Notifications {unreadCount > 0 && <span className="tag">{unreadCount}</span>}
                   </span>
                   {unreadCount > 0 && (
-                    <button
-                      onClick={handleMarkAllRead}
-                      className="btn btn--ghost"
-                      style={{ fontSize: 12, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 4 }}
-                    >
+                    <button onClick={handleMarkAllRead} className="btn btn--ghost" style={{ fontSize: 'var(--text-xs)', padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
                       <CheckCheck size={14} /> Tout lire
                     </button>
                   )}
                 </div>
-
                 {!notifications.length ? (
-                  <div style={{ fontSize: 13, color: 'var(--text-muted)', textAlign: 'center', padding: '24px 16px' }}>
-                    Aucune notification pour le moment
-                  </div>
+                  <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-muted)', textAlign: 'center', padding: '24px 16px' }}>Aucune notification pour le moment</div>
                 ) : (
                   notifications.map((n) => (
-                    <div
-                      key={n.id}
-                      onClick={() => handleMarkRead(n.id)}
-                      className={`notif-item ${n.is_read ? '' : 'notif-item--unread'}`}
-                    >
-                      {!n.is_read && (
-                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', float: 'right', marginTop: 4 }} />
-                      )}
-                      <div className={`notif-item__msg ${n.is_read ? 'notif-item--read' : ''}`}>
-                        {n.message}
-                      </div>
-                      <div className="notif-item__time">
-                        {new Date(n.created_at).toLocaleString('fr-FR', {
-                          day: '2-digit', month: '2-digit', year: 'numeric',
-                          hour: '2-digit', minute: '2-digit'
-                        })}
-                      </div>
+                    <div key={n.id} onClick={() => handleMarkRead(n.id)} className={`notif-item ${n.is_read ? '' : 'notif-item--unread'}`}>
+                      {!n.is_read && <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-accent)', float: 'right', marginTop: 4 }} />}
+                      <div className={`notif-item__msg ${n.is_read ? 'notif-item--read' : ''}`}>{n.message}</div>
+                      <div className="notif-item__time">{new Date(n.created_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                     </div>
                   ))
                 )}
@@ -178,18 +124,13 @@ export default function Topbar() {
           </div>
         )}
 
-        {/* Auth button */}
         {user ? (
-          <button
-            className="btn btn--outline btn--sm"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
-            onClick={() => { logout(); navigate('/login'); }}
-          >
+          <button className="btn btn--outline btn--sm" onClick={() => { logout(); navigate('/login'); }}>
             <LogOut size={15} />
             <span>Déconnexion</span>
           </button>
         ) : (
-          <Link to="/login" className="btn btn--primary btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          <Link to="/login" className="btn btn--primary btn--sm">
             <LogIn size={15} />
             <span>Se connecter</span>
           </Link>
