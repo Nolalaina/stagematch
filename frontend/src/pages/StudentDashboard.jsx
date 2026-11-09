@@ -2,18 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import MatchRing from '../components/MatchRing.jsx';
-import { 
-  MapPin, 
-  Target, 
-  Building2, 
-  User, 
-  BookOpen, 
-  ArrowRight, 
-  Sparkles, 
-  Globe, 
-  CheckCircle2,
-  FileText
-} from 'lucide-react';
+import { MapPin, Target, Building2, User, BookOpen, ArrowRight, Globe, FileText } from 'lucide-react';
 
 export default function StudentDashboard() {
   const [profile, setProfile] = useState(null);
@@ -29,123 +18,67 @@ export default function StudentDashboard() {
   }, []);
 
   if (loading) return (
-    <div className="container">
-      <div className="loading-page">
-        <div className="spinner" />
-        <span>Chargement de vos recommandations…</span>
-      </div>
-    </div>
+    <div className="container"><div className="loading-page"><div className="spinner" /><span>Chargement de vos recommandations…</span></div></div>
   );
 
   const initials = (profile?.full_name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
   return (
-    <div className="container" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 32, alignItems: 'start' }}>
-
-      {/* Sidebar profil */}
-      <aside className="animate-in">
-        <div className="card" style={{ padding: 24 }}>
-          <div style={{ textAlign: 'center', marginBottom: 20 }}>
-            <div className="avatar" style={{ width: 64, height: 64, fontSize: 22, margin: '0 auto 14px' }}>
-              {initials}
+    <div className="container page">
+      <div className="split">
+        <aside>
+          <div className="card card--pad">
+            <div className="profile-head">
+              <div className="avatar">{initials}</div>
+              <h2>{profile?.full_name}</h2>
+              <div className="meta"><span><BookOpen size={14} /> {profile?.field_of_study || 'Filière non renseignée'}</span></div>
             </div>
-            <h2 style={{ fontSize: 18, marginBottom: 4 }}>{profile?.full_name}</h2>
-            <div style={{ fontSize: 13, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-              <BookOpen size={14} />
-              <span>{profile?.field_of_study || 'Filière non renseignée'}</span>
+            <hr className="divider" />
+            <div className="section-title">Compétences clés</div>
+            <div className="gap-row--sm mb">
+              {profile?.skills?.length
+                ? profile.skills.map((s) => <span key={s.id} className="tag">{s.name}</span>)
+                : <span className="muted">Aucune compétence renseignée</span>}
             </div>
+            {profile?.location && (
+              <div className="meta mb"><span><MapPin size={14} /> {profile.location} {profile.accepts_remote ? '· Télétravail OK' : ''}</span></div>
+            )}
+            <Link to="/student/profile" className="btn btn--outline btn--block"><User size={15} /><span>Modifier le profil</span></Link>
+            <Link to="/student/applications" className="btn btn--ghost btn--block mt"><FileText size={14} /><span>Mes candidatures</span></Link>
           </div>
+        </aside>
 
-          <hr className="divider" />
-
-          <div className="section-title">Compétences clés</div>
-          <div style={{ marginBottom: 20 }}>
-            {profile?.skills?.length
-              ? profile.skills.map((s) => <span key={s.id} className="tag">{s.name}</span>)
-              : <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>Aucune compétence renseignée</span>
-            }
+        <main>
+          <div className="page__head">
+            <h1>Recommandations sur-mesure</h1>
+            <p>{recommendations.length} offre{recommendations.length !== 1 ? 's' : ''} analysée{recommendations.length !== 1 ? 's' : ''} et classée{recommendations.length !== 1 ? 's' : ''} par score d'adéquation</p>
           </div>
-
-          {profile?.location && (
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <MapPin size={14} style={{ color: 'var(--accent)' }} />
-              <span>{profile.location} {profile.accepts_remote ? '· Télétravail OK' : ''}</span>
+          {error && <div className="error-banner">{error}</div>}
+          {!recommendations.length && (
+            <div className="card empty-state">
+              <p>Complétez votre profil et ajoutez des compétences pour débloquer l'analyse de matching.</p>
+              <Link to="/student/profile" className="btn btn--primary"><span>Compléter mon profil</span><ArrowRight size={16} /></Link>
             </div>
           )}
-
-          <Link to="/student/profile" className="btn btn--outline" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', marginTop: 16 }}>
-            <User size={15} />
-            <span>Modifier le profil</span>
-          </Link>
-          <Link to="/student/applications" className="btn btn--ghost" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', marginTop: 8, fontSize: 13 }}>
-            <FileText size={14} />
-            <span>Mes candidatures</span>
-          </Link>
-        </div>
-      </aside>
-
-      {/* Main content */}
-      <main>
-        <div style={{ marginBottom: 32 }}>
-          <h1 style={{ fontSize: 34, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
-            Recommandations <span className="grad-text">Sur-Mesure</span>
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>
-            {recommendations.length} offre{recommendations.length !== 1 ? 's' : ''} analysée{recommendations.length !== 1 ? 's' : ''} et classée{recommendations.length !== 1 ? 's' : ''} par score d'adéquation sémantique
-          </p>
-        </div>
-
-        {error && <div className="error-banner">{error}</div>}
-
-        {!recommendations.length && (
-          <div className="empty-state card">
-            <p>Complétez votre profil et ajoutez des compétences pour débloquer l'analyse prédictive de matching.</p>
-            <Link to="/student/profile" className="btn btn--primary" style={{ marginTop: 16, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              <span>Compléter mon profil</span>
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        )}
-
-        {recommendations.map((o, i) => (
-          <Link
-            key={o.internshipId}
-            to={`/internships/${o.internshipId}`}
-            className="offer-row animate-in"
-            style={{ animationDelay: `${i * 60}ms` }}
-          >
-            <MatchRing score={o.score} />
-            <div style={{ flex: 1 }}>
-              <h3 style={{ fontSize: 18, marginBottom: 6 }}>{o.title}</h3>
-              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <Building2 size={14} /> {o.company}
-                </span>
-                {o.location && (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <MapPin size={14} /> {o.location}
-                  </span>
-                )}
-                {o.isRemote && (
-                  <span className="tag tag--success" style={{ margin: 0, padding: '2px 8px', fontSize: 11 }}>
-                    <Globe size={12} style={{ marginRight: 4 }} /> Télétravail
-                  </span>
+          {recommendations.map((o) => (
+            <Link key={o.internshipId} to={`/internships/${o.internshipId}`} className="offer-row">
+              <MatchRing score={o.score} />
+              <div className="offer-row__body">
+                <h3>{o.title}</h3>
+                <div className="meta mb">
+                  <span><Building2 size={14} /> {o.company}</span>
+                  {o.location && <span><MapPin size={14} /> {o.location}</span>}
+                  {o.isRemote && <span className="tag tag--success"><Globe size={12} /> Télétravail</span>}
+                </div>
+                {o.missingSkills?.length > 0 && (
+                  <div className="meta"><span><Target size={13} /> À développer : {o.missingSkills.join(', ')}</span></div>
                 )}
               </div>
-              {o.missingSkills?.length > 0 && (
-                <div style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Target size={13} style={{ color: 'var(--warning)' }} />
-                  <span>À développer : {o.missingSkills.join(', ')}</span>
-                </div>
-              )}
-            </div>
-            <span className="btn btn--primary btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <span>Voir l'offre</span>
-              <ArrowRight size={14} />
-            </span>
-          </Link>
-        ))}
-      </main>
+              <span className="btn btn--primary btn--sm"><span>Voir l'offre</span><ArrowRight size={14} /></span>
+            </Link>
+          ))}
+        </main>
+      </div>
     </div>
   );
 }

@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api.js';
-import { 
-  Search, 
-  MapPin, 
-  Target, 
-  Building2, 
-  Clock, 
-  Globe, 
-  ArrowRight, 
-  RotateCcw
-} from 'lucide-react';
+import { Search, MapPin, Target, Building2, Clock, Globe, ArrowRight, RotateCcw } from 'lucide-react';
 
 export default function InternshipSearch() {
   const [offers, setOffers] = useState([]);
@@ -42,105 +33,53 @@ export default function InternshipSearch() {
   }
 
   return (
-    <div className="container">
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 32, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
-          Explorer les <span className="grad-text">Offres de Stage</span>
-        </h1>
-        <p style={{ color: 'var(--text-secondary)' }}>
-          {offers.length > 0 ? `${offers.length} opportunité${offers.length > 1 ? 's' : ''} disponible${offers.length > 1 ? 's' : ''}` : 'Recherchez des stages par localisation, domaine et modalités'}
-        </p>
+    <div className="container page">
+      <div className="page__head">
+        <h1>Explorer les offres de stage</h1>
+        <p>{offers.length > 0 ? `${offers.length} opportunité${offers.length > 1 ? 's' : ''} disponible${offers.length > 1 ? 's' : ''}` : 'Recherchez des stages par localisation, domaine et modalités'}</p>
       </div>
 
-      {/* Filters */}
-      <div className="card animate-in" style={{ marginBottom: 28 }}>
-        <form onSubmit={onSubmit} style={{ display: 'flex', gap: 14, alignItems: 'flex-end', flexWrap: 'wrap' }}>
-          <div className="field" style={{ marginBottom: 0, flex: 1, minWidth: 160 }}>
-            <label htmlFor="loc" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <MapPin size={13} /> Localisation
-            </label>
-            <input
-              id="loc"
-              value={filters.location}
-              onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-              placeholder="Ex : Antananarivo"
-            />
+      <div className="card filters">
+        <form onSubmit={onSubmit}>
+          <div className="field">
+            <label htmlFor="loc"><span className="field__label"><MapPin size={13} /> Localisation</span></label>
+            <input id="loc" value={filters.location} onChange={(e) => setFilters({ ...filters, location: e.target.value })} placeholder="Ex : Antananarivo" />
           </div>
-          <div className="field" style={{ marginBottom: 0, flex: 1, minWidth: 160 }}>
-            <label htmlFor="domain" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Target size={13} /> Domaine / Secteur
-            </label>
-            <input
-              id="domain"
-              value={filters.domain}
-              onChange={(e) => setFilters({ ...filters, domain: e.target.value })}
-              placeholder="Ex : Technologies, Finance"
-            />
+          <div className="field">
+            <label htmlFor="domain"><span className="field__label"><Target size={13} /> Domaine / Secteur</span></label>
+            <input id="domain" value={filters.domain} onChange={(e) => setFilters({ ...filters, domain: e.target.value })} placeholder="Ex : Technologies, Finance" />
           </div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text-secondary)', paddingBottom: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-            <input
-              type="checkbox"
-              checked={filters.remote}
-              onChange={(e) => setFilters({ ...filters, remote: e.target.checked })}
-            />
-            <Globe size={14} style={{ color: 'var(--accent)' }} />
+          <label className="check">
+            <input type="checkbox" checked={filters.remote} onChange={(e) => setFilters({ ...filters, remote: e.target.checked })} />
+            <Globe size={14} />
             <span>Télétravail uniquement</span>
           </label>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 2 }}>
-            <button type="submit" className="btn btn--primary btn--sm" style={{ padding: '11px 20px', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <Search size={15} />
-              <span>Rechercher</span>
-            </button>
-            <button type="button" onClick={onReset} className="btn btn--outline btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <RotateCcw size={14} />
-              <span>Réinitialiser</span>
-            </button>
+          <div className="row-end">
+            <button type="submit" className="btn btn--primary btn--sm"><Search size={15} /><span>Rechercher</span></button>
+            <button type="button" onClick={onReset} className="btn btn--outline btn--sm"><RotateCcw size={14} /><span>Réinitialiser</span></button>
           </div>
         </form>
       </div>
 
-      {loading && (
-        <div className="loading-page" style={{ minHeight: 200 }}>
-          <div className="spinner" />
-        </div>
-      )}
+      {loading && <div className="loading-page"><div className="spinner" /><span>Chargement des offres…</span></div>}
 
       {!loading && !offers.length && (
-        <div className="empty-state card">
-          <p>Aucune offre ne correspond à ces critères de recherche.</p>
-        </div>
+        <div className="card empty-state"><p>Aucune offre ne correspond à ces critères de recherche.</p></div>
       )}
 
-      {!loading && offers.map((o, i) => (
-        <Link key={o.id} to={`/internships/${o.id}`} className="offer-row animate-in" style={{ animationDelay: `${i * 50}ms` }}>
-          <div style={{ flex: 1 }}>
-            <h3 style={{ fontSize: 19, marginBottom: 6 }}>{o.title}</h3>
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <Building2 size={14} /> {o.company_name}
-              </span>
-              {o.location && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <MapPin size={14} /> {o.location}
-                </span>
-              )}
-              {o.duration_weeks && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <Clock size={14} /> {o.duration_weeks} semaines
-                </span>
-              )}
+      {!loading && offers.map((o) => (
+        <Link key={o.id} to={`/internships/${o.id}`} className="offer-row">
+          <div className="offer-row__body">
+            <h3>{o.title}</h3>
+            <div className="meta">
+              <span><Building2 size={14} /> {o.company_name}</span>
+              {o.location && <span><MapPin size={14} /> {o.location}</span>}
+              {o.duration_weeks && <span><Clock size={14} /> {o.duration_weeks} semaines</span>}
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            {o.is_remote && (
-              <span className="tag tag--success" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                <Globe size={12} /> Télétravail
-              </span>
-            )}
-            <span className="btn btn--outline btn--sm" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <span>Détails</span>
-              <ArrowRight size={14} />
-            </span>
+          <div className="row-end">
+            {o.is_remote && <span className="tag tag--success"><Globe size={12} /> Télétravail</span>}
+            <span className="btn btn--outline btn--sm"><span>Détails</span><ArrowRight size={14} /></span>
           </div>
         </Link>
       ))}
