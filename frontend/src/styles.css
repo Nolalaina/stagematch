@@ -764,8 +764,8 @@
 }
 
 .hero__head h1 {
-  font-size: var(--text-display);
-  margin-bottom: var(--space-md);
+  max-width: 13ch;
+  font-size: clamp(3.25rem, 4.6vw, 4.75rem);
   text-wrap: balance;
 }
 

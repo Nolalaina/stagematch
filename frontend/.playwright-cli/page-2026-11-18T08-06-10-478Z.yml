@@ -1,0 +1,141 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - link "StageMatch" [ref=e5] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e11]:
+      - link "Explorer les stages" [ref=e12] [cursor=pointer]:
+        - /url: /internships
+      - generic [ref=e17]:
+        - link "Connexion" [ref=e18] [cursor=pointer]:
+          - /url: /login
+        - link "Créer un compte" [ref=e23] [cursor=pointer]:
+          - /url: /register
+  - generic [ref=e25]:
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - heading "Des stages qui vous correspondent" [level=1] [ref=e30]
+        - paragraph [ref=e31]: Déposez votre profil et laissez le matching intelligent cibler les offres adaptées à vos compétences.
+        - generic [ref=e32]:
+          - link "Créer mon profil" [ref=e33] [cursor=pointer]:
+            - /url: /register
+          - link "Voir les offres" [ref=e37] [cursor=pointer]:
+            - /url: /internships
+      - generic "Aperçu du moteur d'affinité" [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]: Algorithme prédictif
+          - generic [ref=e47]: Affinité optimale
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: Orange Digital Center
+            - generic [ref=e56]: Développeur Web Full-Stack
+            - generic [ref=e57]:
+              - generic [ref=e58]: Antananarivo
+              - generic [ref=e62]: Télétravail
+          - generic [ref=e66]:
+            - img "Score de compatibilité 94 pour cent" [ref=e67]:
+              - generic [ref=e70]: 94%
+              - generic [ref=e71]: match
+            - generic [ref=e72]:
+              - generic [ref=e73]: Indice de compatibilité
+              - generic [ref=e74]: 3 compétences clés validées
+          - generic [ref=e75]:
+            - generic [ref=e76]: React
+            - generic [ref=e79]: Node.js
+            - generic [ref=e82]: SQL
+            - generic [ref=e85]: Docker
+    - generic [ref=e87]:
+      - heading "Comment fonctionne StageMatch" [level=2] [ref=e88]
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - heading "Créez votre profil" [level=3] [ref=e94]
+          - paragraph [ref=e95]: Renseignez votre filière, vos technologies de prédilection et téléversez votre CV.
+        - generic [ref=e96]:
+          - heading "Découvrez vos affinités" [level=3] [ref=e100]
+          - paragraph [ref=e101]: Comparez vos compétences avec les exigences de chaque offre grâce au matching automatique.
+        - generic [ref=e102]:
+          - heading "Postulez simplement" [level=3] [ref=e105]
+          - paragraph [ref=e106]: Envoyez votre candidature en un clic et suivez son évolution depuis votre tableau de bord.
+    - generic [ref=e108]:
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - heading "Dernières opportunités" [level=2] [ref=e111]
+          - paragraph [ref=e112]: Stages récents ouverts aux candidatures étudiantes
+        - link "Toutes les offres" [ref=e113] [cursor=pointer]:
+          - /url: /internships
+      - generic [ref=e117]:
+        - article [ref=e118]:
+          - generic [ref=e119]:
+            - generic [ref=e120]: Orange Digital Center
+            - generic [ref=e125]: Télétravail
+          - heading "Développement Web Junior" [level=3] [ref=e129]
+          - generic [ref=e130]:
+            - generic [ref=e131]: Antananarivo
+            - generic [ref=e135]: 12 semaines
+          - link "Explorer les stages" [ref=e137] [cursor=pointer]:
+            - /url: /internships
+        - article [ref=e139]:
+          - generic [ref=e140]: BNI Madagascar
+          - heading "Analyste Data & Décisionnel" [level=3] [ref=e146]
+          - generic [ref=e147]:
+            - generic [ref=e148]: Antananarivo
+            - generic [ref=e152]: 16 semaines
+          - link "Explorer les stages" [ref=e154] [cursor=pointer]:
+            - /url: /internships
+        - article [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]: Axian Group
+            - generic [ref=e163]: Télétravail
+          - heading "Support & DevOps Cloud" [level=3] [ref=e167]
+          - generic [ref=e168]:
+            - generic [ref=e169]: Antananarivo
+            - generic [ref=e173]: 24 semaines
+          - link "Explorer les stages" [ref=e175] [cursor=pointer]:
+            - /url: /internships
+  - contentinfo [ref=e177]:
+    - generic [ref=e178]:
+      - generic [ref=e179]:
+        - generic [ref=e180]:
+          - link "StageMatch Accueil" [ref=e181] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e186]: StageMatch
+          - paragraph [ref=e187]: Plateforme intelligente de matching entre étudiants en recherche de stage et entreprises partenaires.
+        - generic [ref=e188]:
+          - generic [ref=e189]: Plateforme
+          - navigation "Liens plateforme" [ref=e190]:
+            - list [ref=e191]:
+              - listitem [ref=e192]:
+                - link "Explorer les stages" [ref=e193] [cursor=pointer]:
+                  - /url: /internships
+              - listitem [ref=e194]:
+                - link "Espace connexion" [ref=e195] [cursor=pointer]:
+                  - /url: /login
+              - listitem [ref=e196]:
+                - link "Inscription gratuite" [ref=e197] [cursor=pointer]:
+                  - /url: /register
+        - generic [ref=e198]:
+          - generic [ref=e199]: Espaces dédiés
+          - navigation "Portails dédiés" [ref=e200]:
+            - list [ref=e201]:
+              - listitem [ref=e202]:
+                - link "Portail Candidat" [ref=e203] [cursor=pointer]:
+                  - /url: /student
+              - listitem [ref=e204]:
+                - link "Portail Recruteur" [ref=e205] [cursor=pointer]:
+                  - /url: /company
+              - listitem [ref=e206]:
+                - link "Console Administration" [ref=e207] [cursor=pointer]:
+                  - /url: /admin
+        - generic [ref=e208]:
+          - generic [ref=e209]: Informations
+          - navigation "Liens légaux" [ref=e210]:
+            - list [ref=e211]:
+              - listitem [ref=e212]:
+                - link "Offres récentes" [ref=e213] [cursor=pointer]:
+                  - /url: /internships
+              - listitem [ref=e214]:
+                - link "Confidentialité des données" [ref=e215] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e216]:
+                - link "Conditions d'utilisation" [ref=e217] [cursor=pointer]:
+                  - /url: /
+      - generic [ref=e218]: © 2026 StageMatch Technologies. Algorithme de matching sémantique pour l'emploi étudiant.
