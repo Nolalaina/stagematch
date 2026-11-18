@@ -11,6 +11,8 @@ import InternshipSearch from './pages/InternshipSearch.jsx';
 import OfferDetail from './pages/OfferDetail.jsx';
 import CompanyDashboard from './pages/CompanyDashboard.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import ExplorePage from './pages/ExplorePage.jsx';
+import TidePage from './pages/TidePage.jsx';
 import NotFound from './pages/NotFound.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 
@@ -27,6 +29,8 @@ export default function App() {
       <Topbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/tide" element={<TidePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/internships" element={<InternshipSearch />} />

@@ -1,5 +1,5 @@
-/* Hallmark · shape: Stage · genre: modern-minimal · theme: Dusk (deal 1/3, seed stagematch-plateforme-matching-stage-fbeb·f75eaa97·2026-11-09·r0) · job: sign up · draw: stagematch-plateforme-matching-stage-fbeb·f75eaa97·2026-11-09·r0
- * hero: Stage · nav: edge-aligned wordmark + one action · footer: mast + wordmark over links · imagery: product screenshot in slot + library stand-ins · signature: matching interface in the hero slot · dusk: smoked glass, lit top edge, periwinkle signal · axes: dark/grotesk-sans/cool · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · shape: Stage · genre: modern-minimal · theme: Tide (deal 1/3, seed stagematch-plateforme-matching-stage-a1b2c3·d4e5f6·2026-11-16·r1) · job: sign up · draw: stagematch-plateforme-matching-stage-a1b2c3·d4e5f6·2026-11-16·r1
+ * hero: Stage · nav: edge-aligned wordmark + one action · footer: mast + wordmark over links · imagery: product screenshot in slot + library stand-ins · signature: matching interface in the hero slot · tide: smoked glass, lit top edge, sea signal · axes: dark/grotesk-sans/cool · posture: committed · contrast: pass · fold: pass · v2.0.1 */
 /* Hallmark · pre-emit critique: P_ H_ E_ S_ R_ V_ · weakest: S (no real screenshot yet) · data-slot stand-in the user's file replaces */
 @import url("./tokens.css");
 @import url("./base.css");
@@ -372,6 +372,19 @@
 .step-card {
   position: relative;
   padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  min-height: 220px;
+  justify-content: flex-end;
+}
+
+.step-card__icon {
+  width: 44px;
+  height: 44px;
+  padding: var(--space-sm);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-inner);
+  color: var(--color-accent);
+  background: var(--color-paper-3);
+  margin-bottom: auto;
 }
 
 .step-num {
@@ -743,6 +756,7 @@
 .hero {
   padding: var(--section-gap-l) 0;
   position: relative;
+  border-bottom: var(--rule-hair) solid var(--color-rule);
 }
 
 .hero__head {
@@ -752,6 +766,7 @@
 .hero__head h1 {
   font-size: var(--text-display);
   margin-bottom: var(--space-md);
+  text-wrap: balance;
 }
 
 .hero__lead {
@@ -773,6 +788,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-width: 0;
 }
 
 .matching-preview {
@@ -1735,5 +1751,69 @@ td:last-child {
   .card {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+@media (max-width: 68rem) {
+  .topbar {
+    padding-inline: var(--gutter);
+  }
+
+  .nav-link {
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .nav-link span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .nav-role-tag {
+    display: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  .topbar {
+    min-height: 56px;
+  }
+
+  .wordmark-title {
+    display: none;
+  }
+
+  .nav-links {
+    gap: var(--space-2xs);
+  }
+
+  .nav-guest-actions .btn--outline span,
+  .nav-guest-actions .btn--primary,
+  .nav-user-actions .btn span {
+    display: none;
+  }
+
+  .nav-guest-actions .btn,
+  .nav-user-actions .btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+
+  .hero {
+    padding: var(--section-gap-s) 0;
+  }
+
+  .matching-preview {
+    padding: var(--space-lg);
+  }
+
+  .offer-preview-card h3 {
+    min-height: 0;
   }
 }

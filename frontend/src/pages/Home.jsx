@@ -94,19 +94,19 @@ export default function Home() {
           <h2 className="section-title">Comment fonctionne StageMatch</h2>
           <div className="grid grid--3">
             <div className="card step-card">
-              <div className="step-num">01</div>
+              <UserPlus className="step-card__icon" size={22} />
               <h3>Créez votre profil</h3>
-              <p>Renseignez vos filières d'études, vos technologies de prédilection et téléversez votre CV.</p>
+              <p>Renseignez votre filière, vos technologies de prédilection et téléversez votre CV.</p>
             </div>
             <div className="card step-card">
-              <div className="step-num">02</div>
-              <h3>Matching automatisé</h3>
-              <p>Notre algorithme calcule un score de pertinence entre vos aptitudes et les exigences des recruteurs.</p>
+              <Sparkles className="step-card__icon" size={22} />
+              <h3>Découvrez vos affinités</h3>
+              <p>Comparez vos compétences avec les exigences de chaque offre grâce au matching automatique.</p>
             </div>
             <div className="card step-card">
-              <div className="step-num">03</div>
-              <h3>Postulez en un clic</h3>
-              <p>Envoyez votre candidature instantanément et suivez en temps réel l'évaluation de votre dossier.</p>
+              <Check className="step-card__icon" size={22} />
+              <h3>Postulez simplement</h3>
+              <p>Envoyez votre candidature en un clic et suivez son évolution depuis votre tableau de bord.</p>
             </div>
           </div>
         </div>

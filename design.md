@@ -5,11 +5,11 @@ Ce fichier verrouille le système de design. Il override tout ce qui précède e
 ## 1. Identification
 
 - **Projet** : StageMatch — plateforme de matching stage étudiants ↔ recruteurs
-- **Thème** : Dusk (deal 1/3, seed `stagematch-plateforme-matching-stage-fbeb·f75eaa97·2026-11-09·r0`)
+- **Thème** : Tide (deal 1/3, seed `stagematch-plateforme-matching-stage-a1b2c3·d4e5f6·2026-11-16·r1`)
 - **Genre** : modern-minimal
 - **Job principal** : sign up (créer un profil)
 - **Signature** : interface de matching affichée dans le slot du hero
-- **Version** : v2.0.0 — Hallmark
+- **Version** : v2.0.1 — Hallmark (nouvelle palette)
 
 ## 2. Tokens (source unique : `frontend/src/tokens.css`)
 

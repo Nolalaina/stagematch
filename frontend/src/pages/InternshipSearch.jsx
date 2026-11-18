@@ -122,7 +122,7 @@ export default function InternshipSearch() {
               </div>
               <div className="offer-row__cta">
                 <span className="btn btn--outline btn--sm">
-                  <span>Détails</span>
+                  <span>Voir l’offre</span>
                   <ArrowRight size={13} />
                 </span>
               </div>
